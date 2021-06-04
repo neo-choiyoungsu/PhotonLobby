@@ -40,10 +40,17 @@ public class Lobby : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(LobbyState.OUT);
-        
-        if(PlayerPrefs.HasKey(Strings.KEY_USERID))
-            IpfUserName.text = PlayerPrefs.GetString(Strings.KEY_USERID);
+        if (PhotonNetwork.InLobby)
+        {
+            ChangeState(LobbyState.LOBBY);
+        }
+        else
+        {
+            ChangeState(LobbyState.OUT);
+
+            if (PlayerPrefs.HasKey(Strings.KEY_USERID))
+                IpfUserName.text = PlayerPrefs.GetString(Strings.KEY_USERID);
+        }
     }
 
     public void AddAction(Action<LobbyState> action)
@@ -130,7 +137,6 @@ public class Lobby : MonoBehaviour
         {
             PublishUserId = true, 
             MaxPlayers = 4,
-            PlayerTtl = 1000 * 60
         }, TypedLobby.Default);
     }
 
